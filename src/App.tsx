@@ -1,6 +1,8 @@
 import { Grid, GridItem } from "@chakra-ui/react"
 import Sidebar from "./components/layout/Sidebar"
 import Header from "./components/layout/Header"
+import Body from "./components/layout/Body"
+
 function App() {
   return (
     <Grid backgroundColor="gray.900" minH="100vh" templateRows="1fr 8fr" templateColumns="1fr 5fr" >
@@ -11,7 +13,7 @@ function App() {
         <Header/>
       </GridItem>
       <GridItem>
-        
+        <Body/>
       </GridItem>
     </Grid>
   )

@@ -2,7 +2,9 @@ import { Box } from "@chakra-ui/react";
 
 function Sidebar() {
     return (
-        <Box as="aside"></Box>
+        <Box as="aside">
+            
+        </Box>
     )
 }
 
