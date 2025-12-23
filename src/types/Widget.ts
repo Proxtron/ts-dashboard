@@ -4,11 +4,13 @@ export type DashboardWidget = TodoWidget | NotesWidget | WeatherWidget
 
 interface BaseWidget {
     id: number
-    size: "sm" | "md" | "lg",
+    size: WidgetSize,
     type: WidgetType
 }
 
 export type WidgetType = "todo" | "notes" | "weather"
+
+export type WidgetSize = "sm" | "md" | "lg"
 
 export interface TodoWidget extends BaseWidget {
     todos: TodoItem[],
