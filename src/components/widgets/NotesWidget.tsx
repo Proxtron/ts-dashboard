@@ -1,8 +1,8 @@
-import { Card } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 const NotesWidget = () => {
     return (
-        <Card.Body>Notes</Card.Body>
+        <Box>Notes</Box>
     );
 }
 

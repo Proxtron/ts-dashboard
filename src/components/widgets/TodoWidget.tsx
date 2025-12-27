@@ -1,8 +1,8 @@
-import { Card } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 const TodoWidget = () => {
     return (
-        <Card.Body>Todo List</Card.Body>
+        <Box>Todo List</Box>
     );
 }
 

@@ -8,16 +8,14 @@ export default function Body() {
 
     const appContext = useContext(AppContext);
     return (
-        <Box as="main" p="20px">
+        <Box as="main" p="20px" position="relative" minH="100vh">
             <Flex justifyContent="right" mb={3}>
-                <AddWidgetDialog/>
+                <AddWidgetDialog />
             </Flex>
-
-            <Box>
-                {
-                    appContext?.widgets.map(widget => <BaseWidget key={widget.id} size={widget.size} type={widget.type}></BaseWidget>)
-                }
-            </Box>
+            {
+                appContext?.widgets.map(widget => <BaseWidget key={widget.id} size={widget.size} type={widget.type}
+                    x={widget.x} y={widget.y} id={widget.id}></BaseWidget>)
+            }
         </Box>
     );
 }

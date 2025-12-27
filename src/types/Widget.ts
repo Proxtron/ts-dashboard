@@ -5,7 +5,9 @@ export type DashboardWidget = TodoWidget | NotesWidget | WeatherWidget
 interface BaseWidget {
     id: number
     size: WidgetSize,
-    type: WidgetType
+    type: WidgetType,
+    x: number,
+    y: number
 }
 
 export type WidgetType = "todo" | "notes" | "weather"
