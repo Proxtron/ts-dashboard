@@ -10,18 +10,18 @@ export const getElementSize = (size: WidgetSize) => {
 
     if(size === "sm") {
         elementSize = {
-            width: "150px",
-            height: "150px"
+            width: "200px",
+            height: "200px"
         }
     } else if(size === "md") {
         elementSize = {
-            width: "300px",
-            height: "150px"
+            width: "400px",
+            height: "280px"
         }
     } else {
         elementSize = {
-            width: "300px",
-            height: "300px"
+            width: "520px",
+            height: "450px"
         }
     }
 

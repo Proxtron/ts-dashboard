@@ -3,7 +3,7 @@
 export type DashboardWidget = TodoWidget | NotesWidget | WeatherWidget
 
 interface BaseWidget {
-    id: number
+    id: string
     size: WidgetSize,
     type: WidgetType,
     x: number,
@@ -46,3 +46,26 @@ export interface WeatherDay {
     maxTemp: number,
     minTemp: number
 }
+
+//Reducer
+
+interface ReducerBase {
+    type: WidgetActionTypes
+}
+
+export type WidgetActionTypes = "add" | "move" | "get"
+
+interface WidgetActionAdd extends ReducerBase {
+    type: "add",
+    widgetType: WidgetType,
+    size: WidgetSize
+}
+
+interface WidgetActionMove extends ReducerBase {
+    type: "move",
+    deltaX: number,
+    deltaY: number,
+    widgetId: string
+}
+
+export type WidgetActions = WidgetActionAdd | WidgetActionMove;

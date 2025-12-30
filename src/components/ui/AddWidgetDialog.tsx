@@ -10,6 +10,11 @@ const AddWidgetDialog = () => {
 
     const appContext = useContext(AppContext);
 
+    if(!appContext) {
+        return;
+    }
+
+    const { widgetsDispatch } = appContext;
     return (
         <Dialog.Root>
             <Dialog.Trigger>
@@ -85,7 +90,11 @@ const AddWidgetDialog = () => {
                     </Dialog.Body>
                     <Dialog.Footer justifyContent="center">
                         <Dialog.ActionTrigger>
-                            <Button onClick={() => appContext?.addWidget(type, size)} variant="outline"><Plus /></Button>
+                            <Button onClick={() => widgetsDispatch({
+                                type: "add",
+                                widgetType: type,
+                                size: size
+                            })} variant="outline"><Plus /></Button>
                         </Dialog.ActionTrigger>
                     </Dialog.Footer>
                 </Dialog.Content>
