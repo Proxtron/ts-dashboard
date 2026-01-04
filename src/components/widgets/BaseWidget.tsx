@@ -37,7 +37,7 @@ const BaseWidget = ({ size, type, x, y, id }: BaseWidgetProps) => {
             {...attributes}>
             <Card.Body display="grid" p={4} pr={1} gridTemplateColumns="repeat(10, 1fr)">
                 <GridItem gridColumn="1/10">
-                    {type === "todo" && <TodoWidget/>}
+                    {type === "todo" && <TodoWidget id={id}/>}
                     {type === "notes" && <NotesWidget />}
                     {type === "weather" && <WeatherWidget />}
                 </GridItem>

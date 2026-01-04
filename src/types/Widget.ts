@@ -33,9 +33,10 @@ export interface WeatherWidget extends BaseWidget {
 //Models
 export interface TodoItem {
     title: string,
-    description: string,
-    due: Date,
-    completed: boolean
+    description?: string,
+    due?: Date,
+    completed: boolean,
+    id: string
 }
 
 export interface Note {
@@ -53,7 +54,7 @@ interface ReducerBase {
     type: WidgetActionTypes
 }
 
-export type WidgetActionTypes = "add" | "move" | "get"
+export type WidgetActionTypes = "add" | "move" | "toggleTodo" | "addTodo"
 
 interface WidgetActionAdd extends ReducerBase {
     type: "add",
@@ -68,4 +69,16 @@ interface WidgetActionMove extends ReducerBase {
     widgetId: string
 }
 
-export type WidgetActions = WidgetActionAdd | WidgetActionMove;
+interface WidgetActionToggleTodo extends ReducerBase {
+    type: "toggleTodo",
+    widgetId: string,
+    todoId: string
+}
+
+interface WidgetActionAddTodo extends ReducerBase {
+    type: "addTodo",
+    widgetId: string,
+    newTodoItem: TodoItem
+}
+
+export type WidgetActions = WidgetActionAdd | WidgetActionMove | WidgetActionToggleTodo | WidgetActionAddTodo;

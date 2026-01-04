@@ -1,42 +1,25 @@
 import { Grid, GridItem } from "@chakra-ui/react"
 import Sidebar from "./components/layout/Sidebar"
 import Header from "./components/layout/Header"
-import { useReducer, useState } from "react"
+import { useReducer} from "react"
 import { AppContext } from "./context/AppContext"
-import { type DashboardWidget, type WidgetSize, type WidgetType } from "./types/Widget"
+import { type DashboardWidget} from "./types/Widget"
 import type { AppContextType } from "./types/Context"
 import { DndContext } from "@dnd-kit/core"
-import type { UniqueIdentifier } from "@dnd-kit/core/dist/types"
 import { restrictToParentElement } from "@dnd-kit/modifiers"
 import { RouterProvider } from "react-router"
 import router from "./routes/routes"
 import type { WidgetActions } from "./types/Widget"
 import { v4 } from "uuid"
+import { getTodoItem, getWidget } from "./lib/get"
 
 function App() {
-  // const [widgets, setWidgets] = useState<DashboardWidget[]>([]);
-
   const [widgets, widgetsDispatch] = useReducer(reducer, []);
 
-  // const moveWidget = (deltaX: number, deltaY: number, id: UniqueIdentifier) => {
-  //   const newWidgets = widgets.map((widget) => {
-  //     if (widget.id === id) {
-  //       return {
-  //         ...widget,
-  //         x: widget.x + deltaX,
-  //         y: widget.y + deltaY
-  //       }
-  //     } else {
-  //       return widget;
-  //     }
-  //   });
-
-  //   setWidgets(newWidgets);
-  // }
 
   const appContext: AppContextType = {
     widgets: widgets,
-    widgetsDispatch: widgetsDispatch
+    widgetsDispatch: widgetsDispatch,
   }
 
   return (
@@ -116,6 +99,39 @@ const reducer = (oldState: DashboardWidget[], action: WidgetActions) => {
         } else {
           return widget;
         }
+      });
+      break;
+    case "toggleTodo":
+      newState = oldState.map((widget) => {
+        if(widget.id === action.widgetId && widget.type === "todo") {
+          return {
+            ...widget,
+            todos: widget.todos.map((todo) => {
+              if(todo.id === action.todoId) {
+                return {
+                  ...todo,
+                  completed: !todo.completed
+                }
+              }
+              return todo;
+            })
+          }
+        }
+        return widget;
+      })
+      break;
+    case "addTodo":
+      newState = oldState.map((widget) => {
+        if(widget.id === action.widgetId && widget.type === "todo") {
+          return {
+            ...widget,
+            todos: [
+              ...widget.todos,
+              action.newTodoItem
+            ]
+          }
+        }
+        return widget;
       });
   }
 

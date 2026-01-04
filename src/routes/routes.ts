@@ -8,7 +8,7 @@ const router = createBrowserRouter([
         Component: Body,
     }, 
     {
-        path: "/todos/:todoId",
+        path: "/todos/:widgetId",
         Component: TodoBody
     }
 ])
