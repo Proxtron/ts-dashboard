@@ -19,7 +19,7 @@ export default function Body() {
                 <AddWidgetDialog />
             </Flex>
             {
-                widgets.map(widget => <BaseWidget key={widget.id} size={widget.size} type={widget.type}
+                widgets.map(widget => <BaseWidget key={widget.id} type={widget.type}
                     x={widget.x} y={widget.y} id={widget.id}></BaseWidget>)
             }
         </Box>

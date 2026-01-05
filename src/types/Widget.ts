@@ -4,7 +4,6 @@ export type DashboardWidget = TodoWidget | NotesWidget | WeatherWidget
 
 interface BaseWidget {
     id: string
-    size: WidgetSize,
     type: WidgetType,
     x: number,
     y: number
@@ -12,7 +11,6 @@ interface BaseWidget {
 
 export type WidgetType = "todo" | "notes" | "weather"
 
-export type WidgetSize = "sm" | "md" | "lg"
 
 export interface TodoWidget extends BaseWidget {
     todos: TodoItem[],
@@ -59,7 +57,6 @@ export type WidgetActionTypes = "add" | "move" | "toggleTodo" | "addTodo"
 interface WidgetActionAdd extends ReducerBase {
     type: "add",
     widgetType: WidgetType,
-    size: WidgetSize
 }
 
 interface WidgetActionMove extends ReducerBase {

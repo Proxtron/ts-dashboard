@@ -1,4 +1,4 @@
-import type { WidgetSize, WidgetType } from "@/types/Widget"
+import type { WidgetType } from "@/types/Widget"
 import { Dialog, Button, Field, RadioGroup, HStack } from "@chakra-ui/react"
 import { X, Plus } from "lucide-react"
 import { useContext, useState } from "react"
@@ -6,7 +6,6 @@ import { AppContext } from "../../context/AppContext";
 
 const AddWidgetDialog = () => {
     const [type, setType] = useState<WidgetType>("todo");
-    const [size, setSize] = useState<WidgetSize>("md");
 
     const appContext = useContext(AppContext);
 
@@ -60,40 +59,12 @@ const AddWidgetDialog = () => {
                                 </HStack>
                             </RadioGroup.Root>
                         </Field.Root>
-
-                        <Field.Root>
-                            <Field.Label fontSize="16px" mb={3}>
-                                Size
-                                <Field.RequiredIndicator />
-                            </Field.Label>
-
-                            <RadioGroup.Root value={size} onValueChange={(event) => setSize(event.value as WidgetSize)}>
-                                <HStack gap={3}>
-                                    <RadioGroup.Item value="sm">
-                                        <RadioGroup.ItemHiddenInput />
-                                        <RadioGroup.ItemIndicator/>
-                                        <RadioGroup.ItemText>Small</RadioGroup.ItemText>
-                                    </RadioGroup.Item>
-                                    <RadioGroup.Item value="md">
-                                        <RadioGroup.ItemHiddenInput />
-                                        <RadioGroup.ItemIndicator/>
-                                        <RadioGroup.ItemText>Medium</RadioGroup.ItemText>
-                                    </RadioGroup.Item>
-                                    <RadioGroup.Item value="lg">
-                                        <RadioGroup.ItemHiddenInput />
-                                        <RadioGroup.ItemIndicator/>
-                                        <RadioGroup.ItemText>Large</RadioGroup.ItemText>
-                                    </RadioGroup.Item>
-                                </HStack>
-                            </RadioGroup.Root>
-                        </Field.Root>
                     </Dialog.Body>
                     <Dialog.Footer justifyContent="center">
                         <Dialog.ActionTrigger>
                             <Button onClick={() => widgetsDispatch({
                                 type: "add",
                                 widgetType: type,
-                                size: size
                             })} variant="outline"><Plus /></Button>
                         </Dialog.ActionTrigger>
                     </Dialog.Footer>

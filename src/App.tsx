@@ -11,7 +11,6 @@ import { RouterProvider } from "react-router"
 import router from "./routes/routes"
 import type { WidgetActions } from "./types/Widget"
 import { v4 } from "uuid"
-import { getTodoItem, getWidget } from "./lib/get"
 
 function App() {
   const [widgets, widgetsDispatch] = useReducer(reducer, []);
@@ -59,7 +58,6 @@ const reducer = (oldState: DashboardWidget[], action: WidgetActions) => {
           id: v4(),
           type: action.widgetType,
           notes: [],
-          size: action.size,
           x: 0,
           y: 0
         }
@@ -68,7 +66,6 @@ const reducer = (oldState: DashboardWidget[], action: WidgetActions) => {
           id: v4(),
           type: action.widgetType,
           todos: [],
-          size: action.size,
           x: 0,
           y: 0
         }
@@ -77,7 +74,6 @@ const reducer = (oldState: DashboardWidget[], action: WidgetActions) => {
           id: v4(),
           type: action.widgetType,
           forecast: [],
-          size: action.size,
           x: 0,
           y: 0
         }
