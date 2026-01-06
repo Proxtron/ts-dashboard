@@ -29,7 +29,7 @@ const TodoWidget = ({ id, setActivatorNodeRef, listeners }: TodoWidgetProps) => 
         throw new Error(`TodoWidget component can only render widgets of type TodoWidget`);
     }
 
-    const orderedTodos = orderTodos(widget.todos);
+    const displayTodos = getDisplayTodos(widget.todos);
 
     return (
         <Card.Root w="400px" h="320px">
@@ -44,10 +44,10 @@ const TodoWidget = ({ id, setActivatorNodeRef, listeners }: TodoWidgetProps) => 
             <Card.Body py={0} mb={3} overflowY="auto" scrollbarWidth="2">
                 <List.Root listStyle="none">
                     {
-                        orderedTodos.map((todo) =>
+                        displayTodos.map((todo) =>
                             <List.Item key={todo.id} mb={1.5}>
                                 <HStack justifyContent="space-between">
-                                    <Checkbox.Root onChange={() => {
+                                    <Checkbox.Root checked={todo.completed} onChange={() => {
                                         widgetsDispatch({
                                             type: "toggleTodo",
                                             widgetId: id,
@@ -110,9 +110,9 @@ const TodoWidget = ({ id, setActivatorNodeRef, listeners }: TodoWidgetProps) => 
     );
 }
 
-const orderTodos = (todos: TodoItem[]) => {
-    const todosWithNoDate = todos.filter(todo => !todo.due);
-    const todosOrderedWithDate = todos.filter(todo => todo.due).sort((a, b) => compareAsc(a.due!, b.due!));
+const getDisplayTodos = (todos: TodoItem[]) => {
+    const todosWithNoDate = todos.filter(todo => !todo.due && !todo.completed);
+    const todosOrderedWithDate = todos.filter(todo => todo.due && todo.completed).sort((a, b) => compareAsc(a.due!, b.due!));
     return [...todosWithNoDate, ...todosOrderedWithDate];
 }
 

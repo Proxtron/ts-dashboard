@@ -1,7 +1,8 @@
+import InProgressTodos from "@/components/ui/InProgressTodos";
 import TodoAddForm from "@/components/ui/TodoAddForm";
 import { AppContext } from "@/context/AppContext";
 import { getInProgressTodos, getWidget } from "@/lib/get";
-import { Box, Button, Grid, Heading, HStack, useToken, Text} from "@chakra-ui/react";
+import { Box, Button, Grid, Heading, HStack, useToken} from "@chakra-ui/react";
 import { ArrowLeft } from "lucide-react";
 import { useContext, useState } from "react";
 import { Link, useParams } from "react-router";
@@ -46,17 +47,7 @@ const TodoBody = () => {
                 {todoManagerState === "add" && <TodoAddForm setTodoManagerState={setTodoManagerState} widgetId={widgetId}/>}
             </Box>
             <Box pl={4}>
-                <Box p={3} borderRadius={6} border={`1px solid ${borderDefault}`}>
-                    <HStack>
-                        <Heading>In Progress</Heading>
-                        <Text bgColor="bg.subtle" px={2} py={1} borderRadius={6}>({inProgressTodos.length})</Text>
-                    </HStack>
-                    {inProgressTodos.map((todoItem) => 
-                        <Box key={todoItem.id}>
-                            {todoItem.title}
-                        </Box>
-                    )}
-                </Box>
+                <InProgressTodos inProgressTodos={inProgressTodos} widgetId={widgetId}/>
             </Box>
         </Grid>
     )
