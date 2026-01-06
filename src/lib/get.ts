@@ -15,3 +15,7 @@ export const getTodoItem = (todoList: TodoItem[], todoId: string) => {
     }
     return todo;
 }
+
+export const getInProgressTodos = (todoList: TodoItem[]) => {
+    return todoList.filter(todoItem => !todoItem.completed)
+}

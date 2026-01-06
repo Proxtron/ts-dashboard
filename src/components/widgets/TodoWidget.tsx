@@ -1,10 +1,13 @@
 import { AppContext } from "@/context/AppContext";
 import { getWidget } from "../../lib/get.ts";
-import { Card, Heading, Button, List, Checkbox, HStack, useToken } from "@chakra-ui/react";
+import { Card, Heading, Button, List, Checkbox, HStack, useToken, Text } from "@chakra-ui/react";
 import { useContext } from "react";
 import { Link } from "react-router";
 import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities/useSyntheticListeners";
-import { Grip, Plus } from "lucide-react";
+import { Calendar, Grip, Plus } from "lucide-react";
+import { compareAsc, format } from "date-fns";
+import type { TodoItem } from "@/types/Widget.ts";
+
 
 interface TodoWidgetProps {
     id: string,
@@ -26,8 +29,10 @@ const TodoWidget = ({ id, setActivatorNodeRef, listeners }: TodoWidgetProps) => 
         throw new Error(`TodoWidget component can only render widgets of type TodoWidget`);
     }
 
+    const orderedTodos = orderTodos(widget.todos);
+
     return (
-        <Card.Root w="400px" h="280px">
+        <Card.Root w="400px" h="320px">
             <Card.Header>
                 <Link to={`/todos/${id}`}>
                     <Button variant="ghost" paddingX={0} mb={3}>
@@ -36,28 +41,51 @@ const TodoWidget = ({ id, setActivatorNodeRef, listeners }: TodoWidgetProps) => 
                 </Link>    
             </Card.Header>
         
-            <Card.Body py={0}>
+            <Card.Body py={0} mb={3} overflowY="auto" scrollbarWidth="2">
                 <List.Root listStyle="none">
                     {
-                        widget.todos.map((todo) =>
-                            <List.Item key={todo.id}>
-                                <Checkbox.Root onChange={() => {
-                                    widgetsDispatch({
-                                        type: "toggleTodo",
-                                        widgetId: id,
-                                        todoId: todo.id
-                                    });
-                                }}>
-                                    <Checkbox.HiddenInput />
-                                    <Checkbox.Control
-                                        _checked={{
-                                            bg: "accent.default",
-                                            borderColor: "accent.default",
-                                            color: "text.primary"
-                                        }}
-                                    />
-                                    <Checkbox.Label>{todo.title}</Checkbox.Label>
-                                </Checkbox.Root>
+                        orderedTodos.map((todo) =>
+                            <List.Item key={todo.id} mb={1.5}>
+                                <HStack justifyContent="space-between">
+                                    <Checkbox.Root onChange={() => {
+                                        widgetsDispatch({
+                                            type: "toggleTodo",
+                                            widgetId: id,
+                                            todoId: todo.id
+                                        });
+                                    }}>
+                                        <Checkbox.HiddenInput />
+                                        <Checkbox.Control
+                                            _checked={{
+                                                bg: "accent.default",
+                                                borderColor: "accent.default",
+                                                color: "text.primary"
+                                            }}
+                                            _hover={{
+                                                cursor: "pointer",
+                                                borderColor: "accent.default",
+                                                color: "text.primary"
+                                            }}
+                                        />
+                                        <Checkbox.Label _hover={{
+                                            cursor: "pointer"
+                                        }}>{todo.title}</Checkbox.Label>
+                                    </Checkbox.Root>
+                                    {
+                                        todo.due && (
+                                            <Text color="text.secondary" fontSize="14px">
+                                                <HStack>
+                                                    <Calendar size="14"/>
+                                                    {format(todo.due, "MMM d")}
+                                                </HStack>
+                                                
+                                            </Text>
+                                              
+                                        )
+                                    }
+                                    
+                                </HStack>
+                                
                             </List.Item>
                         )
                     }
@@ -80,6 +108,12 @@ const TodoWidget = ({ id, setActivatorNodeRef, listeners }: TodoWidgetProps) => 
             </Card.Footer>
         </Card.Root>
     );
+}
+
+const orderTodos = (todos: TodoItem[]) => {
+    const todosWithNoDate = todos.filter(todo => !todo.due);
+    const todosOrderedWithDate = todos.filter(todo => todo.due).sort((a, b) => compareAsc(a.due!, b.due!));
+    return [...todosWithNoDate, ...todosOrderedWithDate];
 }
 
 export default TodoWidget;

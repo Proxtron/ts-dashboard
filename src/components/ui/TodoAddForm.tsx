@@ -2,12 +2,14 @@ import { Button, Box, Field, Input, Text, Textarea, HStack, useToken } from "@ch
 import { AppContext } from "../../context/AppContext";
 import { useContext, useState, type FormEvent } from "react";
 import { v4 } from "uuid";
+import type { TodoManagerState } from "../../routes/TodoBody";
 
-interface TodoAddManagementProps {
-    widgetId: string
+interface TodoAddFormProps {
+    widgetId: string,
+    setTodoManagerState: (newState: TodoManagerState) => void
 }
 
-const TodoManagementForm = ({widgetId}: TodoAddManagementProps) => {
+const TodoAddForm = ({widgetId, setTodoManagerState}: TodoAddFormProps) => {
     const [defaultBorder] = useToken("colors", ["border.default"]);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -32,6 +34,7 @@ const TodoManagementForm = ({widgetId}: TodoAddManagementProps) => {
                 completed: false
             }
         });
+        setTodoManagerState("closed");
     }
     
     
@@ -63,16 +66,20 @@ const TodoManagementForm = ({widgetId}: TodoAddManagementProps) => {
                 <Text color="text.muted">(optional)</Text>
             </Field.Label>
             <Input type="date" variant="outline" placeholder="e.g., Buy Groceries" 
-                onChange={event => setDueDate(new Date(event.target.value))}/>
+                onChange={event => {
+                    if(event.target.value) {
+                        setDueDate(new Date(event.target.value + 'T00:00:00'));
+                    }
+                }}/>
             <Field.HelperText />
             <Field.ErrorText />
         </Field.Root>
         <HStack gapX={4}>
             <Button type="submit" backgroundColor="accent.default" color="text.primary">Save</Button>
-            <Button variant="outline" border={`1px solid ${defaultBorder}`}>Cancel</Button>
+            <Button variant="outline" border={`1px solid ${defaultBorder}`} onClick={() => setTodoManagerState("closed")}>Cancel</Button>
         </HStack>
     </Box>
     )
 }
 
-export default TodoManagementForm;
+export default TodoAddForm;
