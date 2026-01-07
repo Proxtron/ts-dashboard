@@ -4,13 +4,14 @@ import { useContext } from "react";
 import { AppContext } from "@/context/AppContext";
 import { format } from "date-fns";
 import { Pencil, Trash } from "lucide-react";
-
+import type { TodoManagerModify, TodoManagerState } from "@/routes/TodoBody";
 interface InProgressTodosProps {
     inProgressTodos: TodoItem[],
-    widgetId: string
+    widgetId: string,
+    setTodoManagerState: (newState: TodoManagerState | TodoManagerModify) => void
 }
 
-const InProgressTodos = ({inProgressTodos, widgetId}: InProgressTodosProps) => {
+const InProgressTodos = ({inProgressTodos, widgetId, setTodoManagerState}: InProgressTodosProps) => {
     const appContext = useContext(AppContext);
     if(!appContext) return;
     const {widgetsDispatch} = appContext;
@@ -53,10 +54,10 @@ const InProgressTodos = ({inProgressTodos, widgetId}: InProgressTodosProps) => {
                                         cursor: "pointer"
                                     }}>{todo.title}</Checkbox.Label>
                                 </Checkbox.Root>
-                                {todo.due && <Text color="text.secondary" fontSize={14}>Due: {format(todo.due, "MMM d, Y")}</Text>}    
+                                {todo.due && <Text color="text.secondary" fontSize={14}>Due: {format(todo.due, "MMM d, y")}</Text>}    
                             </Box>
                             <HStack gapX={3}>
-                                <Pencil cursor="pointer" color={textSecondary}/>
+                                <Pencil cursor="pointer" color={textSecondary} onClick={() => setTodoManagerState({type: "modify", todoModifyingId: todo.id})}/>
                                 <Trash cursor="pointer" color={textSecondary}/>
                             </HStack>
                         </HStack>

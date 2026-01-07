@@ -8,7 +8,16 @@ import { ArrowLeft } from "lucide-react";
 import { useContext, useState } from "react";
 import { Link, useParams } from "react-router";
 
-export type TodoManagerState = "add" | "modify" | "closed"
+export interface TodoManagerState {
+    type: TodoManagerStateType
+} 
+
+export interface TodoManagerModify extends TodoManagerState {
+    type: "modify",
+    todoModifyingId: string
+}
+
+type TodoManagerStateType = "add" | "modify" | "closed"
 
 const TodoBody = () => {
     const {widgetId} = useParams();
@@ -26,10 +35,9 @@ const TodoBody = () => {
     }
 
     const inProgressTodos = getInProgressTodos(thisWidget.todos);
-
-    const [todoManagerState, setTodoManagerState] = useState<TodoManagerState>("closed");
+    const [todoManagerState, setTodoManagerState] = useState<TodoManagerState | TodoManagerModify>({type: "closed"});
     const [secondary, borderDefault] = useToken("colors", ["text.secondary", "border.default"])
-    
+
     return (
         <Grid minH="100vh" gridTemplateColumns="4fr 6fr" as="main" p={5}>
             <Box pr={4} borderRight={`1px solid ${borderDefault}`}>
@@ -43,13 +51,14 @@ const TodoBody = () => {
                 </HStack>
                 <HStack mb={3}>
                     <Button color="text.primary" bgColor="accent.default" mx="auto" width="200px" 
-                        onClick={() => setTodoManagerState("add")}>Add New Todo</Button>
+                        onClick={() => setTodoManagerState({type: "add"})}>Add New Todo</Button>
                 </HStack>
-                {todoManagerState === "add" && <TodoAddForm setTodoManagerState={setTodoManagerState} widgetId={widgetId}/>}
-                {todoManagerState === "modify" && <TodoModifyForm setTodoManagerState={setTodoManagerState} widgetId={widgetId}/>}
+                {todoManagerState.type === "add" && <TodoAddForm setTodoManagerState={setTodoManagerState} widgetId={widgetId}/>}
+                {todoManagerState.type === "modify" && <TodoModifyForm setTodoManagerState={setTodoManagerState} 
+                    widgetId={widgetId} todoId={(todoManagerState as TodoManagerModify).todoModifyingId}/>}
             </Box>
             <Box pl={4}>
-                <InProgressTodos inProgressTodos={inProgressTodos} widgetId={widgetId}/>
+                <InProgressTodos inProgressTodos={inProgressTodos} widgetId={widgetId} setTodoManagerState={setTodoManagerState}/>
             </Box>
         </Grid>
     )

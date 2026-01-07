@@ -129,6 +129,27 @@ const reducer = (oldState: DashboardWidget[], action: WidgetActions) => {
         }
         return widget;
       });
+      break;
+    case "editTodo":
+      newState = oldState.map((widget) => {
+        if(widget.id === action.widgetId && widget.type === "todo") {
+          const newTodos = widget.todos.map((todo) => {
+            if(todo.id === action.todoId) {
+              return {
+                id: action.todoId,
+                ...action.newTodoAttributes
+              }
+            }
+            return todo
+          })  
+          return {
+            ...widget,
+            todos: newTodos
+          }
+        }
+        return widget;
+      })
+      break;
   }
 
   return newState;

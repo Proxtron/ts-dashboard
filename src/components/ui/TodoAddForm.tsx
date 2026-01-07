@@ -34,7 +34,7 @@ const TodoAddForm = ({widgetId, setTodoManagerState}: TodoAddFormProps) => {
                 completed: false
             }
         });
-        setTodoManagerState("closed");
+        setTodoManagerState({type:"closed"});
     }
     
     
@@ -76,7 +76,7 @@ const TodoAddForm = ({widgetId, setTodoManagerState}: TodoAddFormProps) => {
         </Field.Root>
         <HStack gapX={4}>
             <Button type="submit" backgroundColor="accent.default" color="text.primary">Save</Button>
-            <Button variant="outline" border={`1px solid ${defaultBorder}`} onClick={() => setTodoManagerState("closed")}>Cancel</Button>
+            <Button variant="outline" border={`1px solid ${defaultBorder}`} onClick={() => setTodoManagerState({type:"closed"})}>Cancel</Button>
         </HStack>
     </Box>
     )

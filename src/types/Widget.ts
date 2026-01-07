@@ -52,7 +52,7 @@ interface ReducerBase {
     type: WidgetActionTypes
 }
 
-export type WidgetActionTypes = "add" | "move" | "toggleTodo" | "addTodo"
+export type WidgetActionTypes = "add" | "move" | "toggleTodo" | "addTodo" | "editTodo"
 
 interface WidgetActionAdd extends ReducerBase {
     type: "add",
@@ -78,4 +78,11 @@ interface WidgetActionAddTodo extends ReducerBase {
     newTodoItem: TodoItem
 }
 
-export type WidgetActions = WidgetActionAdd | WidgetActionMove | WidgetActionToggleTodo | WidgetActionAddTodo;
+interface WidgetActionEditTodo extends ReducerBase {
+    type: "editTodo",
+    widgetId: string,
+    todoId: string,
+    newTodoAttributes: Omit<TodoItem, "id">
+}
+
+export type WidgetActions = WidgetActionAdd | WidgetActionMove | WidgetActionToggleTodo | WidgetActionAddTodo | WidgetActionEditTodo;

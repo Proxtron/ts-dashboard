@@ -4,6 +4,7 @@ import { useContext, useState, type FormEvent } from "react";
 import { v4 } from "uuid";
 import type { TodoManagerState } from "../../routes/TodoBody";
 import { useTodo } from "@/lib/get";
+import { format } from "date-fns";
 
 interface TodoModifyFormProps {
     widgetId: string,
@@ -28,17 +29,17 @@ const TodoModifyForm = ({widgetId, todoId, setTodoManagerState}: TodoModifyFormP
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
         widgetsDispatch({
-            type: "addTodo",
+            type: "editTodo",
             widgetId,
-            newTodoItem: {
-                id: v4(),
+            todoId: todo.id,
+            newTodoAttributes: {
                 title,
                 description,
                 due: dueDate,
-                completed: false
+                completed: todo.completed
             }
         });
-        setTodoManagerState("closed");
+        setTodoManagerState({type:"closed"});
     }
     
     
@@ -50,7 +51,7 @@ const TodoModifyForm = ({widgetId, todoId, setTodoManagerState}: TodoModifyFormP
                 Title
                 <Field.RequiredIndicator />
             </Field.Label>
-            <Input variant="outline" placeholder="e.g., Buy Groceries" onChange={event => setTitle(event.target.value)}/>
+            <Input variant="outline" placeholder="e.g., Buy Groceries" onChange={event => setTitle(event.target.value)} value={title}/>
             <Field.HelperText />
             <Field.ErrorText />
         </Field.Root>
@@ -60,7 +61,7 @@ const TodoModifyForm = ({widgetId, todoId, setTodoManagerState}: TodoModifyFormP
                 <Text color="text.muted">(optional)</Text>
             </Field.Label>
             <Textarea variant="outline" placeholder="Add details here..." rows={4} resize="none" 
-                onChange={event => setDescription(event.target.value)}/>
+                onChange={event => setDescription(event.target.value)} value={description}/>
             <Field.HelperText />
             <Field.ErrorText />
         </Field.Root>
@@ -74,13 +75,13 @@ const TodoModifyForm = ({widgetId, todoId, setTodoManagerState}: TodoModifyFormP
                     if(event.target.value) {
                         setDueDate(new Date(event.target.value + 'T00:00:00'));
                     }
-                }}/>
+                }} value={dueDate ? format(dueDate, "yyyy-MM-dd") : undefined}/>
             <Field.HelperText />
             <Field.ErrorText />
         </Field.Root>
         <HStack gapX={4}>
             <Button type="submit" backgroundColor="accent.default" color="text.primary">Save</Button>
-            <Button variant="outline" border={`1px solid ${defaultBorder}`} onClick={() => setTodoManagerState("closed")}>Cancel</Button>
+            <Button variant="outline" border={`1px solid ${defaultBorder}`} onClick={() => setTodoManagerState({type:"closed"})}>Cancel</Button>
         </HStack>
     </Box>
     )
