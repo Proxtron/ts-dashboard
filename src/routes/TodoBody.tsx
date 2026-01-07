@@ -1,5 +1,6 @@
 import InProgressTodos from "@/components/ui/InProgressTodos";
 import TodoAddForm from "@/components/ui/TodoAddForm";
+import TodoModifyForm from "@/components/ui/TodoModifyForm";
 import { AppContext } from "@/context/AppContext";
 import { getInProgressTodos, getWidget } from "@/lib/get";
 import { Box, Button, Grid, Heading, HStack, useToken} from "@chakra-ui/react";
@@ -45,6 +46,7 @@ const TodoBody = () => {
                         onClick={() => setTodoManagerState("add")}>Add New Todo</Button>
                 </HStack>
                 {todoManagerState === "add" && <TodoAddForm setTodoManagerState={setTodoManagerState} widgetId={widgetId}/>}
+                {todoManagerState === "modify" && <TodoModifyForm setTodoManagerState={setTodoManagerState} widgetId={widgetId}/>}
             </Box>
             <Box pl={4}>
                 <InProgressTodos inProgressTodos={inProgressTodos} widgetId={widgetId}/>

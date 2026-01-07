@@ -19,3 +19,11 @@ export const getTodoItem = (todoList: TodoItem[], todoId: string) => {
 export const getInProgressTodos = (todoList: TodoItem[]) => {
     return todoList.filter(todoItem => !todoItem.completed)
 }
+
+export const useTodo = (widgets: DashboardWidget[], widgetId: string, todoId: string) => {
+    const widget = getWidget(widgets, widgetId);
+    if(widget.type !== "todo") {
+        throw new Error(`widgetId (${widgetId}) must refer to a widget of type TodoWidget`)
+    }
+    return getTodoItem(widget.todos, todoId);
+}
