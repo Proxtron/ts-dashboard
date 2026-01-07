@@ -1,7 +1,6 @@
 import { Button, Box, Field, Input, Text, Textarea, HStack, useToken } from "@chakra-ui/react";
 import { AppContext } from "../../context/AppContext";
-import { useContext, useState, type FormEvent } from "react";
-import { v4 } from "uuid";
+import { useContext, useState, type FormEvent, useEffect } from "react";
 import type { TodoManagerState } from "../../routes/TodoBody";
 import { useTodo } from "@/lib/get";
 import { format } from "date-fns";
@@ -25,6 +24,12 @@ const TodoModifyForm = ({widgetId, todoId, setTodoManagerState}: TodoModifyFormP
     const [title, setTitle] = useState(todo.title);
     const [description, setDescription] = useState(todo.description);
     const [dueDate, setDueDate] = useState<Date | undefined>(todo.due);
+
+    useEffect(() => {
+        setTitle(todo.title);
+        setDescription(todo.description);
+        setDueDate(todo.due);
+    }, [todo])
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
@@ -75,7 +80,7 @@ const TodoModifyForm = ({widgetId, todoId, setTodoManagerState}: TodoModifyFormP
                     if(event.target.value) {
                         setDueDate(new Date(event.target.value + 'T00:00:00'));
                     }
-                }} value={dueDate ? format(dueDate, "yyyy-MM-dd") : undefined}/>
+                }} value={dueDate ? format(dueDate, "yyyy-MM-dd") : ""}/>
             <Field.HelperText />
             <Field.ErrorText />
         </Field.Root>

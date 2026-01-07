@@ -2,7 +2,7 @@ import InProgressTodos from "@/components/ui/InProgressTodos";
 import TodoAddForm from "@/components/ui/TodoAddForm";
 import TodoModifyForm from "@/components/ui/TodoModifyForm";
 import { AppContext } from "@/context/AppContext";
-import { getInProgressTodos, getWidget } from "@/lib/get";
+import { getInProgressTodos, getTodoDisplayOrder, getWidget } from "@/lib/get";
 import { Box, Button, Grid, Heading, HStack, useToken} from "@chakra-ui/react";
 import { ArrowLeft } from "lucide-react";
 import { useContext, useState } from "react";
@@ -34,7 +34,8 @@ const TodoBody = () => {
         throw new Error("Widget is not a todo widget");
     }
 
-    const inProgressTodos = getInProgressTodos(thisWidget.todos);
+    const inProgressTodos = getTodoDisplayOrder(getInProgressTodos(thisWidget.todos));
+
     const [todoManagerState, setTodoManagerState] = useState<TodoManagerState | TodoManagerModify>({type: "closed"});
     const [secondary, borderDefault] = useToken("colors", ["text.secondary", "border.default"])
 

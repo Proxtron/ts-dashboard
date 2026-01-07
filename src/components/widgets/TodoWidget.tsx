@@ -5,8 +5,8 @@ import { useContext } from "react";
 import { Link } from "react-router";
 import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities/useSyntheticListeners";
 import { Calendar, Grip, Plus } from "lucide-react";
-import { compareAsc, format } from "date-fns";
-import type { TodoItem } from "@/types/Widget.ts";
+import { format } from "date-fns";
+import { getTodoDisplayOrder, getInProgressTodos } from "../../lib/get.ts";
 
 
 interface TodoWidgetProps {
@@ -29,7 +29,7 @@ const TodoWidget = ({ id, setActivatorNodeRef, listeners }: TodoWidgetProps) => 
         throw new Error(`TodoWidget component can only render widgets of type TodoWidget`);
     }
 
-    const displayTodos = getDisplayTodos(widget.todos);
+    const displayTodos = getTodoDisplayOrder(getInProgressTodos(widget.todos));
 
     return (
         <Card.Root w="400px" h="320px">
@@ -108,12 +108,6 @@ const TodoWidget = ({ id, setActivatorNodeRef, listeners }: TodoWidgetProps) => 
             </Card.Footer>
         </Card.Root>
     );
-}
-
-const getDisplayTodos = (todos: TodoItem[]) => {
-    const todosWithNoDate = todos.filter(todo => !todo.due && !todo.completed);
-    const todosOrderedWithDate = todos.filter(todo => todo.due && todo.completed).sort((a, b) => compareAsc(a.due!, b.due!));
-    return [...todosWithNoDate, ...todosOrderedWithDate];
 }
 
 export default TodoWidget;
