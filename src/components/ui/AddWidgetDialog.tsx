@@ -46,11 +46,6 @@ const AddWidgetDialog = () => {
                                         <RadioGroup.ItemIndicator/>
                                         <RadioGroup.ItemText>Todo List</RadioGroup.ItemText>
                                     </RadioGroup.Item>
-                                    <RadioGroup.Item value="notes">
-                                        <RadioGroup.ItemHiddenInput />
-                                        <RadioGroup.ItemIndicator/>
-                                        <RadioGroup.ItemText>Notes</RadioGroup.ItemText>
-                                    </RadioGroup.Item>
                                     <RadioGroup.Item value="weather">
                                         <RadioGroup.ItemHiddenInput />
                                         <RadioGroup.ItemIndicator/>

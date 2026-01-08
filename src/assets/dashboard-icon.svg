@@ -1,0 +1,17 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Rounded background -->
+  <rect width="120" height="120" rx="26" fill="#C9A882"/>
+  
+  <!-- Grid of 4 squares -->
+  <!-- Top-left: Black -->
+  <rect x="35" y="35" width="20" height="20" rx="2" fill="#1A1A1A"/>
+  
+  <!-- Top-right: Gray -->
+  <rect x="65" y="35" width="20" height="20" rx="2" fill="#8B8B8B"/>
+  
+  <!-- Bottom-left: Gray -->
+  <rect x="35" y="65" width="20" height="20" rx="2" fill="#8B8B8B"/>
+  
+  <!-- Bottom-right: Black -->
+  <rect x="65" y="65" width="20" height="20" rx="2" fill="#1A1A1A"/>
+</svg>

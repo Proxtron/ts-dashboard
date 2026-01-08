@@ -1,6 +1,6 @@
 //Widgets
 
-export type DashboardWidget = TodoWidget | NotesWidget | WeatherWidget
+export type DashboardWidget = TodoWidget | WeatherWidget
 
 interface BaseWidget {
     id: string
@@ -9,7 +9,7 @@ interface BaseWidget {
     y: number
 }
 
-export type WidgetType = "todo" | "notes" | "weather"
+export type WidgetType = "todo" | "weather"
 
 
 export interface TodoWidget extends BaseWidget {
@@ -17,13 +17,9 @@ export interface TodoWidget extends BaseWidget {
     type: "todo"
 }
 
-export interface NotesWidget extends BaseWidget {
-    notes: Note[],
-    type: "notes"
-}
-
 export interface WeatherWidget extends BaseWidget {
-    forecast: WeatherDay[],
+    location: Location
+    weatherNow: WeatherState,
     type: "weather"
 }
 
@@ -37,13 +33,15 @@ export interface TodoItem {
     id: string
 }
 
-export interface Note {
-    text: string
+interface Location {
+    city: string,
+    state: string,
+    country: string
 }
 
-export interface WeatherDay {
-    maxTemp: number,
-    minTemp: number
+interface WeatherState {
+    temperature: number,
+    
 }
 
 //Reducer

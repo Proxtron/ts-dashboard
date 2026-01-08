@@ -31,11 +31,8 @@ function App() {
       });
     }} modifiers={[restrictToParentElement]}>
       <AppContext.Provider value={appContext}>
-        <Grid backgroundColor="bg.canvas" minH="100vh" templateRows="1fr 8fr" templateColumns="1fr 5fr" >
-          <GridItem gridRow="1 / 4" gridColumn="1 / 2" borderRightWidth="1px" borderColor="gray.500">
-            <Sidebar />
-          </GridItem>
-          <GridItem borderBottomWidth="1px" borderColor="gray.500">
+        <Grid backgroundColor="bg.canvas" minH="100vh" templateRows="1fr 10fr">
+          <GridItem borderBottomWidth="1px" borderColor="border.default">
             <Header />
           </GridItem>
           <GridItem>
@@ -53,15 +50,7 @@ const reducer = (oldState: DashboardWidget[], action: WidgetActions) => {
     case "add":
       let newWidget: DashboardWidget;
 
-      if (action.widgetType === "notes") {
-        newWidget = {
-          id: v4(),
-          type: action.widgetType,
-          notes: [],
-          x: 0,
-          y: 0
-        }
-      } else if (action.widgetType === "todo") {
+      if (action.widgetType === "todo") {
         newWidget = {
           id: v4(),
           type: action.widgetType,
@@ -73,7 +62,6 @@ const reducer = (oldState: DashboardWidget[], action: WidgetActions) => {
         newWidget = {
           id: v4(),
           type: action.widgetType,
-          forecast: [],
           x: 0,
           y: 0
         }
