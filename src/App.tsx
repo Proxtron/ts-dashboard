@@ -150,6 +150,18 @@ const reducer = (oldState: DashboardWidget[], action: WidgetActions) => {
         return widget;
       })
       break;
+    case "deleteTodo":
+      newState = oldState.map((widget) => {
+        if(widget.id === action.widgetId && widget.type === "todo") {
+          const newTodos = widget.todos.filter(todo => todo.id !== action.removingTodoId)
+          return {
+            ...widget,
+            todos: newTodos
+          }
+        }
+        return widget;
+      })
+      break;
   }
 
   return newState;

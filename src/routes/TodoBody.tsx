@@ -1,9 +1,10 @@
+import CompletedTodos from "@/components/ui/CompletedTodos";
 import InProgressTodos from "@/components/ui/InProgressTodos";
 import TodoAddForm from "@/components/ui/TodoAddForm";
 import TodoModifyForm from "@/components/ui/TodoModifyForm";
 import { AppContext } from "@/context/AppContext";
-import { getInProgressTodos, getTodoDisplayOrder, getWidget } from "@/lib/get";
-import { Box, Button, Grid, Heading, HStack, useToken} from "@chakra-ui/react";
+import { getInProgressTodos, getTodoDisplayOrder, getWidget, getCompletedTodos } from "@/lib/get";
+import { Box, Button, Grid, Heading, HStack, List, useToken} from "@chakra-ui/react";
 import { ArrowLeft } from "lucide-react";
 import { useContext, useState } from "react";
 import { Link, useParams } from "react-router";
@@ -35,6 +36,7 @@ const TodoBody = () => {
     }
 
     const inProgressTodos = getTodoDisplayOrder(getInProgressTodos(thisWidget.todos));
+    const completedTodos = getCompletedTodos(thisWidget.todos);
 
     const [todoManagerState, setTodoManagerState] = useState<TodoManagerState | TodoManagerModify>({type: "closed"});
     const [secondary, borderDefault] = useToken("colors", ["text.secondary", "border.default"])
@@ -58,9 +60,10 @@ const TodoBody = () => {
                 {todoManagerState.type === "modify" && <TodoModifyForm setTodoManagerState={setTodoManagerState} 
                     widgetId={widgetId} todoId={(todoManagerState as TodoManagerModify).todoModifyingId}/>}
             </Box>
-            <Box pl={4}>
+            <List.Root listStyle="none" gapY={3} pl={4}>
                 <InProgressTodos inProgressTodos={inProgressTodos} widgetId={widgetId} setTodoManagerState={setTodoManagerState}/>
-            </Box>
+                <CompletedTodos completedTodos={completedTodos} widgetId={widgetId}/>
+            </List.Root>
         </Grid>
     )
 }

@@ -21,6 +21,10 @@ export const getInProgressTodos = (todoList: TodoItem[]) => {
     return todoList.filter(todoItem => !todoItem.completed)
 }
 
+export const getCompletedTodos = (todoList: TodoItem[]) => {
+    return todoList.filter(todoItem => todoItem.completed);
+}
+
 export const useTodo = (widgets: DashboardWidget[], widgetId: string, todoId: string) => {
     const widget = getWidget(widgets, widgetId);
     if(widget.type !== "todo") {

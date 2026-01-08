@@ -1,33 +1,30 @@
-import { Box, useToken, HStack, Heading, Text, Checkbox, List, Popover } from "@chakra-ui/react";
+import { Box, HStack, Heading, Text, List, Checkbox, useToken } from "@chakra-ui/react";
 import type { TodoItem } from "@/types/Widget";
 import { useContext } from "react";
 import { AppContext } from "@/context/AppContext";
 import { format } from "date-fns";
-import { Pencil, Trash } from "lucide-react";
-import type { TodoManagerModify, TodoManagerState } from "@/routes/TodoBody";
-import ConfirmDeletePopover from "./ConfirmDeletePopover";
-interface InProgressTodosProps {
-    inProgressTodos: TodoItem[],
+import { Trash } from "lucide-react";
+
+interface CompletedTodosProps {
+    completedTodos: TodoItem[]
     widgetId: string,
-    setTodoManagerState: (newState: TodoManagerState | TodoManagerModify) => void
 }
 
-const InProgressTodos = ({inProgressTodos, widgetId, setTodoManagerState}: InProgressTodosProps) => {
+const CompletedTodos = ({completedTodos, widgetId}: CompletedTodosProps) => {
     const appContext = useContext(AppContext);
     if(!appContext) return;
     const {widgetsDispatch} = appContext;
+    const [borderDefault, textSecondary] = useToken("colors", ["border.default", "text.secondary"]);
 
-    const [borderDefault, textSecondary] = useToken("colors", ["border.default", "text.secondary"])
-    
     return (
         <Box p={3} borderRadius={6} border={`1px solid ${borderDefault}`}>
             <HStack mb={3}>
-                <Heading>In Progress</Heading>
-                <Text bgColor="bg.subtle" px={2} py={1} borderRadius={6}>({inProgressTodos.length})</Text>
+                <Heading>Completed</Heading>
+                <Text bgColor="bg.subtle" px={2} py={1} borderRadius={6}>({completedTodos.length})</Text>
             </HStack>
             <List.Root listStyle="none" gapY={2}>
             {
-                inProgressTodos.map((todo) => 
+                completedTodos.map((todo) => 
                     <List.Item bgColor="bg.surface" border={`1px solid ${borderDefault}`} borderRadius={6} p={3} key={todo.id}>
                         <HStack justifyContent="space-between">
                             <Box>
@@ -51,25 +48,27 @@ const InProgressTodos = ({inProgressTodos, widgetId, setTodoManagerState}: InPro
                                             color: "text.primary"
                                         }}
                                     />
-                                    <Checkbox.Label _hover={{
-                                        cursor: "pointer"
-                                    }}>{todo.title}</Checkbox.Label>
+                                    <Checkbox.Label 
+                                        _checked={{
+                                            color: "text.secondary",
+                                            textDecoration: "line-through"
+                                        }}
+                                        _hover={{
+                                            cursor: "pointer"
+                                        }}
+                                    >{todo.title}</Checkbox.Label>
                                 </Checkbox.Root>
                                 {todo.due && <Text color="text.secondary" fontSize={14}>Due: {format(todo.due, "MMM d, y")}</Text>}    
                             </Box>
                             <HStack gapX={3}>
-                                <Pencil cursor="pointer" color={textSecondary} onClick={() => setTodoManagerState({type: "modify", todoModifyingId: todo.id})}/>
-                                <Popover.Root>
-                                    <Popover.Trigger>
-                                        <Trash cursor="pointer" color={textSecondary}/>
-                                    </Popover.Trigger>
-                                    <Popover.Positioner>
-                                            <ConfirmDeletePopover todoId={todo.id} widgetId={widgetId} widgetsDispatch={widgetsDispatch}
-                                                setTodoManagerState={setTodoManagerState}/>
-                                    </Popover.Positioner>
-                                </Popover.Root>
+                                <Trash cursor="pointer" color={textSecondary} onClick={() => widgetsDispatch({
+                                    type: "deleteTodo",
+                                    widgetId: widgetId,
+                                    removingTodoId: todo.id
+                                })}/>
                             </HStack>
                         </HStack>
+                        
                     </List.Item>
                 )
             }    
@@ -79,4 +78,4 @@ const InProgressTodos = ({inProgressTodos, widgetId, setTodoManagerState}: InPro
     )
 }
 
-export default InProgressTodos
+export default CompletedTodos;
