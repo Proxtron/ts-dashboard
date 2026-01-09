@@ -1,7 +1,6 @@
 import type { WidgetType } from "@/types/Widget";
 import { Box } from "@chakra-ui/react";
 import TodoWidget from "./TodoWidget";
-import NotesWidget from "./NotesWidget";
 import WeatherWidget from "./WeatherWidget";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from '@dnd-kit/utilities';
@@ -30,8 +29,7 @@ const BaseWidget = ({ type, x, y, id }: BaseWidgetProps) => {
         <Box ref={setNodeRef} style={style}
             {...attributes}>
                 {type === "todo" && <TodoWidget id={id} listeners={listeners} setActivatorNodeRef={setActivatorNodeRef}/>}
-                {type === "notes" && <NotesWidget />}
-                {type === "weather" && <WeatherWidget />}
+                {type === "weather" && <WeatherWidget widgetId={id} listeners={listeners} setActivatorNodeRef={setActivatorNodeRef} />}
         </Box>
     )
 }

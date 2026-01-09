@@ -18,8 +18,8 @@ export interface TodoWidget extends BaseWidget {
 }
 
 export interface WeatherWidget extends BaseWidget {
-    location: Location
-    weatherNow: WeatherState,
+    location?: Location
+    weatherNow?: WeatherState
     type: "weather"
 }
 
@@ -33,15 +33,18 @@ export interface TodoItem {
     id: string
 }
 
-interface Location {
+export interface Location {
     city: string,
     state: string,
     country: string
 }
 
-interface WeatherState {
+export interface WeatherState {
     temperature: number,
-    
+    weatherCode: number,
+    windSpeed: number,
+    humidityPercentage: number,
+    visiblity: number
 }
 
 //Reducer

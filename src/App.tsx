@@ -63,7 +63,7 @@ const reducer = (oldState: DashboardWidget[], action: WidgetActions) => {
           id: v4(),
           type: action.widgetType,
           x: 0,
-          y: 0
+          y: 0,
         }
       }
 
