@@ -61,5 +61,5 @@ export const getWeatherDescription = (code: number) => {
     if((code >= 61 && code <= 67) || (code >= 80 && code <= 82)) return "Raining";
     if((code >= 71 && code <= 77) || code === 85 || code === 86) return "Snowing";
     if(code >= 95 && code <= 99) return "Thunderstorm";
-    return null;
+    return undefined;
 }
