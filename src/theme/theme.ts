@@ -35,6 +35,18 @@ const customConfig = defineConfig({
                     800: { value: "#614d39" },
                     900: { value: "#524131" },
                 },
+                error: {
+                    50: { value: "#fef2f2" },
+                    100: { value: "#fee2e2" },
+                    200: { value: "#fecaca" },
+                    300: { value: "#fca5a5" },
+                    400: { value: "#f87171" },
+                    500: { value: "#ef4444" },
+                    600: { value: "#dc2626" },
+                    700: { value: "#b91c1c" },
+                    800: { value: "#991b1b" },
+                    900: { value: "#7f1d1d" },
+                },
             },
         },
         semanticTokens: {
@@ -101,6 +113,36 @@ const customConfig = defineConfig({
                     value: {
                         _light: "{colors.accent.700}",
                         _dark: "{colors.accent.300}",
+                    },
+                },
+                "accent.subtle": {
+                    value: {
+                        _light: "{colors.accent.200}",
+                        _dark: "{colors.accent.800}"
+                    }
+                },
+                "error.default": {
+                    value: {
+                        _light: "{colors.error.600}",
+                        _dark: "{colors.error.400}",
+                    },
+                },
+                "error.emphasis": {
+                    value: {
+                        _light: "{colors.error.700}",
+                        _dark: "{colors.error.300}",
+                    },
+                },
+                "error.subtle": {
+                    value: {
+                        _light: "{colors.error.100}",
+                        _dark: "{colors.error.900}",
+                    },
+                },
+                "error.text": {
+                    value: {
+                        _light: "{colors.error.700}",
+                        _dark: "{colors.error.300}",
                     },
                 },
             },

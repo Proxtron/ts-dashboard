@@ -4,6 +4,7 @@ import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities/us
 import type { WeatherState } from "@/types/Widget";
 import { getWeatherDescription, getWeatherIcon } from "@/lib/get";
 import { Wind, Droplet, Eye, MapPinPlus, Grip, MapPinOff, MapPinPen, type LucideIcon } from "lucide-react";
+import LocationSearch from "../ui/LocationSearch";
 
 interface WeatherWidgetProps {
     widgetId: string,
@@ -13,6 +14,13 @@ interface WeatherWidgetProps {
 
 
 const WeatherWidget = ({ widgetId, setActivatorNodeRef, listeners }: WeatherWidgetProps) => {
+
+    const getLocation = (latitude: number, longitude: number) => {
+        fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m`)
+        .then(response => response.json())
+        .then((result) => console.log(result))
+    }
+
 
     const weatherNow : WeatherState = {
         temperature: 75,
@@ -48,10 +56,7 @@ const WeatherWidget = ({ widgetId, setActivatorNodeRef, listeners }: WeatherWidg
                 
                 <Heading>No Location Selected</Heading>
                 <Text fontSize={14} color="text.secondary" mb={6}>Search for a city to see weather details</Text>
-                <Button color="text.primary" bgColor="accent.default">
-                    <MapPinPlus/>
-                    Add Location
-                </Button>
+                <LocationSearch action="add" getLocation={getLocation}/>
 
             </VStack>
             :
@@ -93,10 +98,7 @@ const WeatherWidget = ({ widgetId, setActivatorNodeRef, listeners }: WeatherWidg
                 <Separator mb={6}/>
                 
                 <Card.Footer justifyContent="space-between">
-                    <Button color="text.primary" bgColor="accent.default">
-                        <MapPinPen/>
-                        Edit Location
-                    </Button>
+                    <LocationSearch action="edit" getLocation={getLocation}/>
                 </Card.Footer>
             </>
             }
