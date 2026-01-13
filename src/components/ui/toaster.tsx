@@ -3,9 +3,9 @@
 import {
   Toaster as ChakraToaster,
   Portal,
-  Spinner,
   Stack,
   Toast,
+  Spinner,
   createToaster,
 } from "@chakra-ui/react"
 

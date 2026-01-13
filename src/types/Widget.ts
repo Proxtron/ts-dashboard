@@ -36,7 +36,9 @@ export interface TodoItem {
 export interface Location {
     city: string,
     state: string,
-    country: string
+    country: string,
+    latitude: number,
+    longitude: number
 }
 
 export interface WeatherState {
@@ -53,7 +55,7 @@ interface ReducerBase {
     type: WidgetActionTypes
 }
 
-export type WidgetActionTypes = "add" | "move" | "toggleTodo" | "addTodo" | "editTodo" | "deleteTodo"
+export type WidgetActionTypes = "add" | "move" | "toggleTodo" | "addTodo" | "editTodo" | "deleteTodo" | "changeLocation"
 
 interface WidgetActionAdd extends ReducerBase {
     type: "add",
@@ -92,4 +94,11 @@ interface WidgetActionDeleteTodo extends ReducerBase {
     removingTodoId: string
 }
 
-export type WidgetActions = WidgetActionAdd | WidgetActionMove | WidgetActionToggleTodo | WidgetActionAddTodo | WidgetActionEditTodo | WidgetActionDeleteTodo;
+interface WidgetActionChangeLocation extends ReducerBase {
+    type: "changeLocation",
+    widgetId: string,
+
+}
+
+export type WidgetActions = WidgetActionAdd | WidgetActionMove | WidgetActionToggleTodo | WidgetActionAddTodo 
+    | WidgetActionEditTodo | WidgetActionDeleteTodo | WidgetActionChangeLocation;

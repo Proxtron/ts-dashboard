@@ -1,14 +1,22 @@
 import { Button, Dialog, Input, Portal, InputGroup, Separator, List, HStack, Box, useToken, Text } from "@chakra-ui/react";
 import { MapPinPen, MapPinPlus, Search, X, Locate, LocateOffIcon } from "lucide-react";
 import { useState } from "react";
-
+import SpinnerOverlayManager from "./SpinnerOverlay";
+import { toaster } from "./toaster";
+import { apiClient } from "@/lib/fetch";
+import type { Location } from "@/types/Widget";
 interface LocationSearchProps {
     action: "edit" | "add",
-    getLocation: (latitude: number, longitude: number) => void
+    setLocation: (location: Location) => void
 }
 
-const LocationSearch = ({action, getLocation} : LocationSearchProps) => {
+interface ReverseGeocodeResponse {
+    city: string,
+    principalSubdivision: string,
+    countryCode: string
+}
 
+const LocationSearch = ({action, setLocation} : LocationSearchProps) => {
     const [permissionsDenied, setPermissionsDenied] = useState(false)
     const [accentDefault, errorDefault] = useToken("colors", ["accent.default", "error.default"])
 
@@ -16,12 +24,38 @@ const LocationSearch = ({action, getLocation} : LocationSearchProps) => {
         if(navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
                 setPermissionsDenied(false);
-                getLocation(position.coords.latitude, position.coords.longitude);
+                const {latitude, longitude} = position.coords;
+
+                SpinnerOverlayManager.open("location-request", {})
+                apiClient<ReverseGeocodeResponse>(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}`)
+                .then((result) => {
+                    setLocation({
+                        city: result.city,
+                        state: result.principalSubdivision,
+                        country: result.countryCode,
+                        latitude,
+                        longitude
+                    })
+                })
+                .catch((error) => {
+                    console.error(error);
+                    toaster.create({
+                        title: "Error occured with location service"
+                    })
+                })
+                .finally(() => {
+                    SpinnerOverlayManager.close("location-request");
+                });
             }, () => {
+                toaster.create({
+                    title: "Location permissions denied"
+                })
                 setPermissionsDenied(true);
             })
         } else {
-
+            toaster.create({
+                title: "Your browser does not support location access"
+            })
         }
     }
 

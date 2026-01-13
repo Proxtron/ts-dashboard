@@ -1,5 +1,4 @@
 import { Grid, GridItem } from "@chakra-ui/react"
-import Sidebar from "./components/layout/Sidebar"
 import Header from "./components/layout/Header"
 import { useReducer} from "react"
 import { AppContext } from "./context/AppContext"
@@ -11,7 +10,8 @@ import { RouterProvider } from "react-router"
 import router from "./routes/routes"
 import type { WidgetActions } from "./types/Widget"
 import { v4 } from "uuid"
-
+import SpinnerOverlayManager from "./components/ui/SpinnerOverlay"
+import { Toaster } from "./components/ui/toaster"
 function App() {
   const [widgets, widgetsDispatch] = useReducer(reducer, []);
 
@@ -31,14 +31,16 @@ function App() {
       });
     }} modifiers={[restrictToParentElement]}>
       <AppContext.Provider value={appContext}>
-        <Grid backgroundColor="bg.canvas" minH="100vh" templateRows="1fr 10fr">
-          <GridItem borderBottomWidth="1px" borderColor="border.default">
-            <Header />
-          </GridItem>
-          <GridItem>
-            <RouterProvider router={router} />
-          </GridItem>
-        </Grid>
+        <SpinnerOverlayManager.Viewport/>
+          <Toaster/>
+          <Grid backgroundColor="bg.canvas" minH="100vh" templateRows="1fr 10fr">
+            <GridItem borderBottomWidth="1px" borderColor="border.default">
+              <Header />
+            </GridItem>
+            <GridItem>
+              <RouterProvider router={router} />
+            </GridItem>
+          </Grid>
       </AppContext.Provider>
     </DndContext>
   );
@@ -147,6 +149,17 @@ const reducer = (oldState: DashboardWidget[], action: WidgetActions) => {
             todos: newTodos
           }
         }
+        return widget;
+      })
+      break;
+    case "changeLocation":
+      newState = oldState.map((widget) => {
+        if(widget.id === action.widgetId && widget.type === "weather") {
+          return {
+            ...widget,
+
+          }
+        } 
         return widget;
       })
       break;
