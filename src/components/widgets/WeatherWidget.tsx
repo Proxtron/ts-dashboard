@@ -32,23 +32,38 @@ interface WeatherResponse {
 
 const WeatherWidget = ({ widgetId, setActivatorNodeRef, listeners }: WeatherWidgetProps) => {
     const [location, setLocation] = useState<Location>();
-    const [weatherNow, setWeatherNow] = useState<WeatherState>();
+
+    const appContext = useContext(AppContext);
+    if(!appContext) {
+        return;
+    }
+    const {widgets, widgetsDispatch} = appContext
+
+    const widget = getWidget(widgets, widgetId);
+    if(widget.type !== "weather") return;
 
     useEffect(() => {
         if (location) {
             SpinnerOverlayManager.open("forecast-request", {})
             apiClient<WeatherResponse>(`https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&hourly=visibility&current=weather_code,temperature_2m,wind_speed_10m,relative_humidity_2m&forecast_days=1&wind_speed_unit=mph&temperature_unit=fahrenheit&timezone=auto`)
                 .then((result) => {
-                    console.log(result);
                     const currentHour = new Date(result.current.time).getHours();
                     result.hourly.visibility[currentHour];
-                    setWeatherNow({
+
+                    const newWeatherNow: WeatherState = {
                         temperature: Math.round(result.current.temperature_2m),
                         weatherCode: result.current.weather_code,
                         windSpeed: Math.round(result.current.wind_speed_10m),
                         humidityPercentage: result.current.relative_humidity_2m,
                         visiblity: Math.round(result.hourly.visibility[currentHour] / 1609)
-                    })
+                    }
+
+                    widgetsDispatch({
+                        type: "changeLocation",
+                        widgetId: widget.id,
+                        newLocation: location,
+                        newWeatherNow
+                    });
                 })
                 .catch((error) => {
                     console.error(error);
@@ -62,27 +77,20 @@ const WeatherWidget = ({ widgetId, setActivatorNodeRef, listeners }: WeatherWidg
         }
     }, [location])
 
-    // const appContext = useContext(AppContext);
-    // if(!appContext) {
-    //     return;
-    // }
-    // const {widgets} = appContext
-
-    // const widget = getWidget(widgets, widgetId);
-    // if(widget.type !== "weather") return;
+   
 
     let WeatherIcon: LucideIcon = getWeatherIcon(0);
     let weatherDescription: string | undefined;
-    if (weatherNow) {
-        WeatherIcon = getWeatherIcon(weatherNow.weatherCode);
-        weatherDescription = getWeatherDescription(weatherNow.weatherCode);
+    if (widget.weatherNow) {
+        WeatherIcon = getWeatherIcon(widget.weatherNow.weatherCode);
+        weatherDescription = getWeatherDescription(widget.weatherNow.weatherCode);
     }
 
     const [accentDefault, textSecondary, borderDefault] = useToken("colors", ["accent.default", "text.secondary", "border.default"])
 
     return (
         <Card.Root w="380px" minH="420px" position="relative">
-            {!location || !weatherNow
+            {!widget.location || !widget.weatherNow
                 ?
                 <VStack justifyContent="center" my="auto">
                     <Box bgColor="bg.subtle" display="inline-block" p={6} borderRadius="100%" mb={6}>
@@ -97,14 +105,14 @@ const WeatherWidget = ({ widgetId, setActivatorNodeRef, listeners }: WeatherWidg
                 :
                 <>
                     <Card.Header gapY={0} mb={6}>
-                        <Heading as="h2">{location.city}</Heading>
-                        <Text fontSize="14px" color="text.secondary">{location.state}, {location.country}</Text>
+                        <Heading as="h2">{widget.location.city}</Heading>
+                        <Text fontSize="14px" color="text.secondary">{widget.location.state}, {widget.location.country}</Text>
                     </Card.Header>
 
                     <Card.Body py={0} mb={3}>
                         <HStack justifyContent="space-between" mb={6}>
                             <Box>
-                                <Text lineHeight={1.15} fontSize={56} fontWeight={500}>{weatherNow.temperature}&deg;</Text>
+                                <Text lineHeight={1.15} fontSize={56} fontWeight={500}>{widget.weatherNow.temperature}&deg;</Text>
                                 <Text color="accent.default">{weatherDescription}</Text>
                             </Box>
                             <Box>
@@ -115,17 +123,17 @@ const WeatherWidget = ({ widgetId, setActivatorNodeRef, listeners }: WeatherWidg
                             <VStack py={3} borderRadius={6} bgColor="bg.subtle" flex="1 1 0" border={`1px solid ${borderDefault}`}>
                                 <Wind color={textSecondary} />
                                 <Text fontSize="14px" color="text.secondary">Wind</Text>
-                                <Text>{weatherNow.windSpeed} mph</Text>
+                                <Text>{widget.weatherNow.windSpeed} mph</Text>
                             </VStack>
                             <VStack py={3} borderRadius={6} bgColor="bg.subtle" flex="1 1 0" border={`1px solid ${borderDefault}`}>
                                 <Droplet color={textSecondary} />
                                 <Text fontSize="14px" color="text.secondary">Humidity</Text>
-                                <Text>{weatherNow.humidityPercentage}%</Text>
+                                <Text>{widget.weatherNow.humidityPercentage}%</Text>
                             </VStack>
                             <VStack py={3} borderRadius={6} bgColor="bg.subtle" flex="1 1 0" border={`1px solid ${borderDefault}`}>
                                 <Eye color={textSecondary} />
                                 <Text fontSize="14px" color="text.secondary">Visiblity</Text>
-                                <Text>{weatherNow.visiblity} mi</Text>
+                                <Text>{widget.weatherNow.visiblity} mi</Text>
                             </VStack>
                         </HStack>
                     </Card.Body>

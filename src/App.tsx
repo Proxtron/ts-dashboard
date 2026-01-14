@@ -157,7 +157,8 @@ const reducer = (oldState: DashboardWidget[], action: WidgetActions) => {
         if(widget.id === action.widgetId && widget.type === "weather") {
           return {
             ...widget,
-
+            location: action.newLocation,
+            weatherNow: action.newWeatherNow
           }
         } 
         return widget;

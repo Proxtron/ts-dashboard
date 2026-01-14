@@ -97,7 +97,8 @@ interface WidgetActionDeleteTodo extends ReducerBase {
 interface WidgetActionChangeLocation extends ReducerBase {
     type: "changeLocation",
     widgetId: string,
-
+    newLocation: Location,
+    newWeatherNow: WeatherState
 }
 
 export type WidgetActions = WidgetActionAdd | WidgetActionMove | WidgetActionToggleTodo | WidgetActionAddTodo 
