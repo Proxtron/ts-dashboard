@@ -1,4 +1,4 @@
-import type { Location, WeatherWidget } from "@/types/Widget";
+import type { Location } from "@/types/Widget";
 import { Card, Text, Heading, HStack, Box, useToken, VStack, Button, Separator } from "@chakra-ui/react";
 import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities/useSyntheticListeners";
 import type { WeatherState } from "@/types/Widget";

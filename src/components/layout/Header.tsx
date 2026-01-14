@@ -1,4 +1,4 @@
-import { Heading, Flex, HStack, Separator, Icon } from "@chakra-ui/react";
+import { Heading, Flex, HStack, Separator} from "@chakra-ui/react";
 import AddWidgetDialog from "../ui/AddWidgetDialog";
 import { ColorModeButton } from "../ui/color-mode";
 import Logo from "@/assets/dashboard-icon.svg";
